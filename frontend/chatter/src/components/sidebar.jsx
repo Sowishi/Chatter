@@ -1,4 +1,22 @@
+import useGetConversation from "../hooks/useGetConversation";
+import useConversation from "../zustand/useConversation.js";
+
 const Sidebar = () => {
+  const { conversation } = useGetConversation();
+  const { selectedConversation, setSelectedConversation } = useConversation();
+
+  const isSelected = (id) => {
+    if (selectedConversation == null) {
+      return "";
+    }
+
+    if (selectedConversation._id !== id) {
+      return "";
+    }
+
+    return "bg-blue-600";
+  };
+
   return (
     <>
       <div className="flex-none w-80">
@@ -19,22 +37,19 @@ const Sidebar = () => {
         </label>
         <div className="divider mx-3"></div>
         <div className="users mx-3  overflow-scroll" style={{ height: 500 }}>
-          <div className="user flex items-center justify-start mb-5 p-1 px-2 hover:bg-blue-600 hover:font-bold">
-            <img
-              style={{ width: 50 }}
-              src="https://avatar.iran.liara.run/public/boy?username=Sowishi69"
-              alt=""
-            />
-            <p className="mx-3">Jhon Michael Molina</p>
-          </div>
-          <div className="user flex items-center justify-start mb-5 p-1 px-2 hover:bg-blue-600 hover:font-bold">
-            <img
-              style={{ width: 50 }}
-              src="https://avatar.iran.liara.run/public/boy?username=Sowishi69"
-              alt=""
-            />
-            <p className="mx-3">Jhon Michael Molina</p>
-          </div>
+          {conversation.map((convo) => {
+            return (
+              <div
+                onClick={() => setSelectedConversation(convo)}
+                className={`${isSelected(
+                  convo._id
+                )} user flex items-center justify-start mb-5 p-1 px-2 hover:bg-blue-600 hover:font-bold`}
+              >
+                <img style={{ width: 50 }} src={convo.profilePic} alt="" />
+                <p className="mx-3">{convo.fullname}</p>
+              </div>
+            );
+          })}
         </div>
       </div>
     </>

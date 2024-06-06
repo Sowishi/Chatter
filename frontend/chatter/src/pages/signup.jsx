@@ -1,4 +1,23 @@
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import useSignup from "../hooks/useSignup";
+
 const Signup = () => {
+  const [inputs, setInputs] = useState({
+    fullname: "",
+    username: "",
+    gender: "Male",
+    password: "",
+    confirmPassword: "",
+  });
+
+  const { signup } = useSignup();
+
+  const handleSubmit = () => {
+    signup(inputs);
+  };
+
   return (
     <div
       className="login-wrapper flex items-center justify-center column flex-col bg-slate-950 py-10"
@@ -7,35 +26,61 @@ const Signup = () => {
       <h1 className="text-3xl mb-3 ">Signup to Chatter</h1>
       <input
         type="text"
-        placeholder="Fullname"
+        placeholder="fullname"
         class="input input-bordered input-info w-full max-w-xs my-3"
+        value={inputs.fullname}
+        onChange={(event) => {
+          setInputs({ ...inputs, fullname: event.target.value });
+        }}
       />
       <input
         type="text"
         placeholder="Username"
         class="input input-bordered input-info w-full max-w-xs my-3"
+        value={inputs.username}
+        onChange={(event) => {
+          setInputs({ ...inputs, username: event.target.value });
+        }}
       />
-      <select class="select select-info w-full max-w-xs my-3">
+      <select
+        value={inputs.gender}
+        onChange={(event) => {
+          setInputs({ ...inputs, gender: event.target.value });
+        }}
+        class="select select-info w-full max-w-xs my-3"
+      >
         <option disabled selected>
           Select Gender
         </option>
-        <option>Male</option>
-        <option>Female</option>
+        <option value={"Male"}>Male</option>
+        <option value={"Female"}>Female</option>
       </select>
       <input
+        value={inputs.password}
+        onChange={(event) => {
+          setInputs({ ...inputs, password: event.target.value });
+        }}
         type="password"
         placeholder="Enter your password"
         class="input input-bordered input-info w-full max-w-xs my-3"
       />
       <input
+        value={inputs.confirmPassword}
+        onChange={(event) => {
+          setInputs({ ...inputs, confirmPassword: event.target.value });
+        }}
         type="password"
         placeholder="Enter your password"
         class="input input-bordered input-info w-full max-w-xs my-3"
       />
-      <button className="btn btn-primary w-40 mt-3">Sign Up</button>
+      <button className="btn btn-primary w-40 mt-3" onClick={handleSubmit}>
+        Sign Up
+      </button>
       <p>
         Already have an account?{" "}
-        <button className="btn btn-neutral btn-sm mt-5">Log in</button>
+        <Link to={"/login"}>
+          <button className="btn btn-neutral btn-sm mt-5">Log in</button>
+        </Link>
       </p>
     </div>
   );

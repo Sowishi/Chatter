@@ -1,16 +1,36 @@
+import { useEffect } from "react";
+import { useAuthContext } from "../context/authContext.jsx";
+import useLogout from "../hooks/useLogout";
+import useConversation from "../zustand/useConversation.js";
+
 const Conversation = () => {
-  const convos = [
-    { own: false, message: "Hello" },
-    { own: true, message: "Hell din AHHA" },
-  ];
+  const { logout } = useLogout();
+
+  const { selectedConversation, setSelectedConversation } = useConversation();
+
+  const getSelectedConversation = () => {
+    if (selectedConversation == null) {
+      return false;
+    }
+
+    return selectedConversation;
+  };
+
+  if (selectedConversation == null) {
+    return <NoSelectedConversation />;
+  }
+
   return (
     <>
       <div className="flex-1 border-l border-gray-800">
         <div className="wrapper h-[580px]  flex flex-col">
           <div className="convo-header w-100 bg-blue-950 p-3 px-5 flex items-center justify-between">
-            <h1 className="font-bold">Micaela Serrano</h1>
-            <button className="btn btn-error btn-sm">Log out</button>
+            <h1 className="font-bold">{getSelectedConversation().fullname}</h1>
+            <button className="btn btn-error btn-sm" onClick={logout}>
+              Log out
+            </button>
           </div>
+
           <div className="conversation-body flex-1 m-5">
             <div class="chat chat-start">
               <div class="chat-image avatar">
@@ -72,6 +92,22 @@ const Conversation = () => {
         </div>
       </div>
     </>
+  );
+};
+
+const NoSelectedConversation = () => {
+  const { authUser } = useAuthContext();
+  return (
+    <div className="flex-1 border-l border-gray-800">
+      <div className="wrapper h-[580px]  flex justify-center items-center mx-20">
+        {authUser && (
+          <h1 className="text-3xl text-center">
+            Hello, {authUser.fullname}. Click to the user icon to start a
+            conversation👋
+          </h1>
+        )}
+      </div>
+    </div>
   );
 };
 
