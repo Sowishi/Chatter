@@ -5,7 +5,7 @@ import useConversation from "../zustand/useConversation.js";
 const Sidebar = () => {
   const { conversation } = useGetConversation();
   const { selectedConversation, setSelectedConversation } = useConversation();
-  const [search, setSerach] = useState(null);
+  const [search, setSerach] = useState("");
 
   const isSelected = (id) => {
     if (selectedConversation == null) {
@@ -18,6 +18,12 @@ const Sidebar = () => {
 
     return "bg-blue-600";
   };
+
+  const queryConversation = conversation.filter((convo) => {
+    if (convo.fullname.toLowerCase().startsWith(search.toLowerCase())) {
+      return convo;
+    }
+  });
 
   return (
     <>
@@ -44,7 +50,7 @@ const Sidebar = () => {
         </label>
         <div className="divider mx-3"></div>
         <div className="users mx-3  overflow-scroll" style={{ height: 500 }}>
-          {conversation.map((convo) => {
+          {queryConversation.map((convo) => {
             return (
               <div
                 onClick={() => setSelectedConversation(convo)}

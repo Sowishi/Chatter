@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 const useGetMessages = () => {
   const [messages, setMessages] = useState([]);
@@ -15,7 +16,7 @@ const useGetMessages = () => {
       }
       setMessages(data.messages);
     } catch (error) {
-      toast.error(error.message);
+      // toast.error(error.message);
     }
   };
 
