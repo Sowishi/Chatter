@@ -1,11 +1,14 @@
 import { useState } from "react";
 import useGetConversation from "../hooks/useGetConversation";
 import useConversation from "../zustand/useConversation.js";
+import { useSocketContext } from "../context/socketContext.jsx";
 
 const Sidebar = () => {
   const { conversation } = useGetConversation();
   const { selectedConversation, setSelectedConversation } = useConversation();
   const [search, setSerach] = useState("");
+
+  const { onlineUsers } = useSocketContext();
 
   const isSelected = (id) => {
     if (selectedConversation == null) {
@@ -51,6 +54,11 @@ const Sidebar = () => {
         <div className="divider mx-3"></div>
         <div className="users mx-3  overflow-scroll" style={{ height: 500 }}>
           {queryConversation.map((convo) => {
+            let online = false;
+            if (onlineUsers.includes(convo._id)) {
+              online = true;
+            }
+
             return (
               <div
                 onClick={() => setSelectedConversation(convo)}
@@ -58,7 +66,20 @@ const Sidebar = () => {
                   convo._id
                 )} user flex items-center justify-start mb-5 p-1 px-2 hover:bg-blue-600 hover:font-bold`}
               >
-                <img style={{ width: 50 }} src={convo.profilePic} alt="" />
+                <div className="wrapper" style={{ position: "relative" }}>
+                  <div
+                    className={`active ${online ? " bg-green-500" : ""}`}
+                    style={{
+                      width: 15,
+                      height: 15,
+                      borderRadius: 100,
+                      position: "absolute",
+                      right: 0,
+                      top: 0,
+                    }}
+                  ></div>
+                  <img style={{ width: 50 }} src={convo.profilePic} alt="" />
+                </div>
                 <p className="mx-3">{convo.fullname}</p>
               </div>
             );

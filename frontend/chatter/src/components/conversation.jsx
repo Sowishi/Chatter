@@ -4,6 +4,7 @@ import useLogout from "../hooks/useLogout";
 import useConversation from "../zustand/useConversation.js";
 import useSendMessage from "../hooks/useSendMessage.js";
 import useGetMessages from "../hooks/useGetMessages.js";
+import useListenMessage from "../hooks/useListenMessage.js";
 
 const Conversation = () => {
   const [message, setMessage] = useState();
@@ -15,6 +16,8 @@ const Conversation = () => {
   const { getMessages, messages } = useGetMessages();
 
   const lastMessageRef = useRef();
+
+  useListenMessage();
 
   //This fucntion check if selected conversation is null then get the data if not null
   const getSelectedConversation = () => {
@@ -46,7 +49,7 @@ const Conversation = () => {
           </div>
 
           <div className="wrapper h-[500px] overflow-scroll">
-            {messages.length >= 1 && (
+            {messages?.length >= 1 && (
               <div className="conversation-body flex-1 m-5">
                 {messages.map((message, index) => {
                   let own = false;

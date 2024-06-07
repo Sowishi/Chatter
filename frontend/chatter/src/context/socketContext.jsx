@@ -5,7 +5,7 @@ import io from "socket.io-client";
 export const SocketContext = createContext();
 
 export const useSocketContext = () => {
-  useContext(SocketContext);
+  return useContext(SocketContext);
 };
 
 export const SocketContextProvider = ({ children }) => {
@@ -22,6 +22,10 @@ export const SocketContextProvider = ({ children }) => {
       });
       setSocket(socket);
 
+      socket.on("getOnlineUsers", (users) => {
+        setOnlineUsers(users);
+      });
+
       return () => socket.close();
     } else {
       if (socket) {
@@ -29,7 +33,7 @@ export const SocketContextProvider = ({ children }) => {
         setSocket(null);
       }
     }
-  }, []);
+  }, [authUser]);
 
   return (
     <SocketContext.Provider value={{ socket, onlineUsers }}>
