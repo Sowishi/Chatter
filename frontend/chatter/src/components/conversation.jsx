@@ -1,13 +1,22 @@
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAuthContext } from "../context/authContext.jsx";
 import useLogout from "../hooks/useLogout";
 import useConversation from "../zustand/useConversation.js";
+import useSendMessage from "../hooks/useSendMessage.js";
+import useGetMessages from "../hooks/useGetMessages.js";
 
 const Conversation = () => {
-  const { logout } = useLogout();
+  const [message, setMessage] = useState();
 
   const { selectedConversation, setSelectedConversation } = useConversation();
+  const { authUser } = useAuthContext();
+  const { logout } = useLogout();
+  const { sendMessage } = useSendMessage();
+  const { getMessages, messages } = useGetMessages();
 
+  const lastMessageRef = useRef();
+
+  //This fucntion check if selected conversation is null then get the data if not null
   const getSelectedConversation = () => {
     if (selectedConversation == null) {
       return false;
@@ -15,6 +24,11 @@ const Conversation = () => {
 
     return selectedConversation;
   };
+
+  useEffect(() => {
+    getMessages(selectedConversation ? selectedConversation._id : "");
+    lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [selectedConversation, sendMessage]);
 
   if (selectedConversation == null) {
     return <NoSelectedConversation />;
@@ -31,63 +45,69 @@ const Conversation = () => {
             </button>
           </div>
 
-          <div className="conversation-body flex-1 m-5">
-            <div class="chat chat-start">
-              <div class="chat-image avatar">
-                <div class="w-10 rounded-full">
-                  <img
-                    alt="Tailwind CSS chat bubble component"
-                    src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
-                  />
-                </div>
+          <div className="wrapper h-[500px] overflow-scroll">
+            {messages.length >= 1 && (
+              <div className="conversation-body flex-1 m-5">
+                {messages.map((message, index) => {
+                  let own = false;
+                  if (message.senderID == authUser._id) own = true;
+
+                  return (
+                    <div
+                      ref={
+                        index === messages.length - 1 ? lastMessageRef : null
+                      }
+                      key={index}
+                      class={`chat ${own ? "chat-end" : "chat-start"}`}
+                    >
+                      <div class="chat-image avatar">
+                        <div class="w-10 rounded-full">
+                          <img
+                            alt="Tailwind CSS chat bubble component"
+                            src={
+                              own
+                                ? authUser.profilePic
+                                : selectedConversation.profilePic
+                            }
+                          />
+                        </div>
+                      </div>
+                      <div class="chat-header">
+                        {own
+                          ? authUser.fullname
+                          : selectedConversation.fullname}
+                      </div>
+                      <div class="chat-bubble">{message.message}</div>
+                    </div>
+                  );
+                })}
               </div>
-              <div class="chat-header">
-                Obi-Wan Kenobi
-                <time class="text-xs opacity-50">12:45</time>
-              </div>
-              <div class="chat-bubble">You were the Chosen One!</div>
-              <div class="chat-footer opacity-50">Delivered</div>
-            </div>
-            <div class="chat chat-end">
-              <div class="chat-image avatar">
-                <div class="w-10 rounded-full">
-                  <img
-                    alt="Tailwind CSS chat bubble component"
-                    src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
-                  />
-                </div>
-              </div>
-              <div class="chat-header">
-                Anakin
-                <time class="text-xs opacity-50">12:46</time>
-              </div>
-              <div class="chat-bubble">I hate you!</div>
-              <div class="chat-footer opacity-50">Seen at 12:46</div>
-            </div>
-            <div class="chat chat-end">
-              <div class="chat-image avatar">
-                <div class="w-10 rounded-full">
-                  <img
-                    alt="Tailwind CSS chat bubble component"
-                    src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
-                  />
-                </div>
-              </div>
-              <div class="chat-header">
-                Anakin
-                <time class="text-xs opacity-50">12:46</time>
-              </div>
-              <div class="chat-bubble">I hate you!</div>
-              <div class="chat-footer opacity-50">Seen at 12:46</div>
-            </div>
+            )}
           </div>
+
           <div className="send flex flex-row justify-center items-center m-3">
             <input
+              value={message}
+              onChange={(e) => setMessage(event.target.value)}
+              onKeyDown={(e) => {
+                if (e.key == "Enter") {
+                  sendMessage(selectedConversation._id, message);
+                  setMessage("");
+                }
+              }}
               type="text"
               placeholder="Type message here..."
               class="input input-bordered input-info w-full "
             />
-            <button className="btn btn-neutral ml-3">Send</button>
+            <button
+              className="btn btn-neutral ml-3"
+              onClick={() => {
+                sendMessage(selectedConversation._id, message);
+                setMessage("");
+              }}
+            >
+              Send
+            </button>
           </div>
         </div>
       </div>

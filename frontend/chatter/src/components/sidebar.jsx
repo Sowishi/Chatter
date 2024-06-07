@@ -1,9 +1,11 @@
+import { useState } from "react";
 import useGetConversation from "../hooks/useGetConversation";
 import useConversation from "../zustand/useConversation.js";
 
 const Sidebar = () => {
   const { conversation } = useGetConversation();
   const { selectedConversation, setSelectedConversation } = useConversation();
+  const [search, setSerach] = useState(null);
 
   const isSelected = (id) => {
     if (selectedConversation == null) {
@@ -21,7 +23,12 @@ const Sidebar = () => {
     <>
       <div className="flex-none w-80">
         <label class="input input-bordered flex items-center gap-2 m-3">
-          <input type="text" class="grow" placeholder="Search User" />
+          <input
+            type="text"
+            class="grow"
+            placeholder="Search User"
+            onChange={(e) => setSerach(e.target.value)}
+          />
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 16 16"
