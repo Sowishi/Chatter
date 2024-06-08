@@ -30,7 +30,7 @@ const Sidebar = () => {
 
   return (
     <>
-      <div className="flex-none w-80">
+      <div className="flex-none w-100 overflow-hidden ">
         <label class="input input-bordered flex items-center gap-2 m-3">
           <input
             type="text"
@@ -52,7 +52,7 @@ const Sidebar = () => {
           </svg>
         </label>
         <div className="divider mx-3"></div>
-        <div className="users mx-3  overflow-scroll" style={{ height: 500 }}>
+        <div className="users mx-3  overflow-scroll" style={{ height: 470 }}>
           {queryConversation.map((convo) => {
             let online = false;
             if (onlineUsers.includes(convo._id)) {
