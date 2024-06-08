@@ -36,6 +36,7 @@ const Conversation = () => {
   if (selectedConversation == null) {
     return <NoSelectedConversation />;
   }
+  console.log(messages);
 
   return (
     <>
@@ -85,6 +86,16 @@ const Conversation = () => {
                   );
                 })}
               </div>
+            )}
+
+            {messages == undefined && (
+              <>
+                <div className="h-[500px] flex justify-center items-center">
+                  <h1 className="text-3xl">
+                    Say hello to, {selectedConversation?.fullname} 👋
+                  </h1>
+                </div>
+              </>
             )}
           </div>
 
