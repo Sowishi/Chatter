@@ -29,7 +29,7 @@ export const login = async (req, res) => {
 
 export const signup = async (req, res) => {
   try {
-    const { fullname, username, password, confirmPassword, gender } = req.body;
+    const { username, password, confirmPassword, gender } = req.body;
     if (password !== confirmPassword) {
       return res.status(400).json({ error: "Passwords don't match" });
     }
@@ -46,7 +46,6 @@ export const signup = async (req, res) => {
     const girlProfile = `https://avatar.iran.liara.run/public/girl?username=${username}`;
 
     const newUser = new User({
-      fullname,
       username,
       password: hash,
       gender,

@@ -5,7 +5,6 @@ import useSignup from "../hooks/useSignup";
 
 const Signup = () => {
   const [inputs, setInputs] = useState({
-    fullname: "",
     username: "",
     gender: "Male",
     password: "",
@@ -24,15 +23,7 @@ const Signup = () => {
       style={{ width: 500, minHeight: 450 }}
     >
       <h1 className="text-3xl mb-3 text-white ">Signup to Chatter</h1>
-      <input
-        type="text"
-        placeholder="fullname"
-        class="input input-bordered input-info w-full max-w-xs my-3"
-        value={inputs.fullname}
-        onChange={(event) => {
-          setInputs({ ...inputs, fullname: event.target.value });
-        }}
-      />
+
       <input
         type="text"
         placeholder="Username"
