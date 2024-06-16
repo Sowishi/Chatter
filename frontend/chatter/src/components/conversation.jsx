@@ -47,9 +47,11 @@ const Conversation = () => {
               className="mr-5"
               onClick={() => setSelectedConversation(null)}
             />
-            <h1 className="font-bold">{getSelectedConversation().fullname}</h1>
+            <h1 className="font-bold text-white">
+              {getSelectedConversation().fullname}
+            </h1>
           </div>
-          <button className="btn btn-error btn-sm" onClick={logout}>
+          <button className="btn btn-error btn-sm text-white" onClick={logout}>
             Log out
           </button>
         </div>
@@ -79,7 +81,7 @@ const Conversation = () => {
                         />
                       </div>
                     </div>
-                    <div class="chat-header">
+                    <div class="chat-header text-white">
                       {own ? authUser.fullname : selectedConversation.fullname}
                     </div>
                     <div class="chat-bubble">{message.message}</div>
@@ -91,7 +93,7 @@ const Conversation = () => {
 
           {messages == undefined && (
             <>
-              <div className="h-[500px] flex justify-center items-center">
+              <div className="h-[500px] flex justify-center items-center text-white">
                 <h1 className="text-3xl">
                   Say hello to, {selectedConversation?.fullname} 👋
                 </h1>
@@ -100,7 +102,7 @@ const Conversation = () => {
           )}
         </div>
 
-        <div className="send flex flex-row justify-center items-center m-3">
+        <div className="send flex flex-row justify-center items-center m-3 text-white">
           <input
             value={message}
             onChange={(e) => setMessage(event.target.value)}

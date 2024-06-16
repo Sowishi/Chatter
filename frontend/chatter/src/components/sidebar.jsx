@@ -80,7 +80,7 @@ const Sidebar = () => {
                   ></div>
                   <img style={{ width: 50 }} src={convo.profilePic} alt="" />
                 </div>
-                <p className="mx-3">{convo.fullname}</p>
+                <p className="mx-3 text-white">{convo.fullname}</p>
               </div>
             );
           })}
