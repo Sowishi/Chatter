@@ -22,11 +22,17 @@ const Sidebar = () => {
     return "bg-blue-600";
   };
 
-  const queryConversation = conversation.filter((convo) => {
-    if (convo.fullname.toLowerCase().startsWith(search.toLowerCase())) {
-      return convo;
-    }
-  });
+  let queryConversation = [];
+
+  if (conversation.length >= 1) {
+    queryConversation = conversation.filter((convo) => {
+      if (convo.username.toLowerCase().startsWith(search.toLowerCase())) {
+        return convo;
+      }
+    });
+  }
+
+  console.log(queryConversation, "Fdfl");
 
   return (
     <>
@@ -52,39 +58,41 @@ const Sidebar = () => {
           </svg>
         </label>
         <div className="divider mx-3"></div>
-        <div className="users mx-3  overflow-scroll" style={{ height: 470 }}>
-          {queryConversation.map((convo) => {
-            let online = false;
-            if (onlineUsers.includes(convo._id)) {
-              online = true;
-            }
+        {queryConversation.length >= 1 && (
+          <div className="users mx-3  overflow-scroll" style={{ height: 470 }}>
+            {queryConversation.map((convo) => {
+              let online = false;
+              if (onlineUsers.includes(convo._id)) {
+                online = true;
+              }
 
-            return (
-              <div
-                onClick={() => setSelectedConversation(convo)}
-                className={`${isSelected(
-                  convo._id
-                )} user flex items-center justify-start mb-5 p-1 px-2 hover:bg-blue-600 hover:font-bold`}
-              >
-                <div className="wrapper" style={{ position: "relative" }}>
-                  <div
-                    className={`active ${online ? " bg-green-500" : ""}`}
-                    style={{
-                      width: 15,
-                      height: 15,
-                      borderRadius: 100,
-                      position: "absolute",
-                      right: 0,
-                      top: 0,
-                    }}
-                  ></div>
-                  <img style={{ width: 50 }} src={convo.profilePic} alt="" />
+              return (
+                <div
+                  onClick={() => setSelectedConversation(convo)}
+                  className={`${isSelected(
+                    convo._id
+                  )} user flex items-center justify-start mb-5 p-1 px-2 hover:bg-blue-600 hover:font-bold`}
+                >
+                  <div className="wrapper" style={{ position: "relative" }}>
+                    <div
+                      className={`active ${online ? " bg-green-500" : ""}`}
+                      style={{
+                        width: 15,
+                        height: 15,
+                        borderRadius: 100,
+                        position: "absolute",
+                        right: 0,
+                        top: 0,
+                      }}
+                    ></div>
+                    <img style={{ width: 50 }} src={convo.profilePic} alt="" />
+                  </div>
+                  <p className="mx-3 text-white">{convo.username}</p>
                 </div>
-                <p className="mx-3 text-white">{convo.fullname}</p>
-              </div>
-            );
-          })}
-        </div>
+              );
+            })}
+          </div>
+        )}
       </div>
     </>
   );

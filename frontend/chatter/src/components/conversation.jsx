@@ -31,7 +31,10 @@ const Conversation = () => {
 
   useEffect(() => {
     getMessages(selectedConversation ? selectedConversation._id : "");
-    if (lastMessageRef?.current !== undefined) {
+    if (
+      lastMessageRef?.current !== undefined &&
+      lastMessageRef.current !== null
+    ) {
       lastMessageRef?.current.scrollIntoView({
         behavior: "smooth",
       });
@@ -107,7 +110,7 @@ const Conversation = () => {
             <>
               <div className="h-[500px] flex justify-center items-center text-white">
                 <h1 className="text-3xl">
-                  Say hello to, {selectedConversation?.fullname} 👋
+                  Say hello to, {selectedConversation?.username} 👋
                 </h1>
               </div>
             </>
