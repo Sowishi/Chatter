@@ -45,6 +45,8 @@ const Conversation = () => {
     return <NoSelectedConversation />;
   }
 
+  console.log("fdjf");
+
   return (
     <>
       <div className="wrapper h-[580px] ">
@@ -53,6 +55,7 @@ const Conversation = () => {
             <IoMdArrowRoundBack
               className="mr-5"
               onClick={() => setSelectedConversation(null)}
+              color="white"
             />
             <h1 className="font-bold text-white">
               {getSelectedConversation().username}
@@ -132,7 +135,7 @@ const Conversation = () => {
             }}
             type="text"
             placeholder="Type message here..."
-            class="input input-bordered input-info w-full "
+            class="input input-bordered input-info w-full text-black"
           />
           <button
             className="btn btn-neutral ml-3"

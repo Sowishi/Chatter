@@ -17,7 +17,7 @@ export const login = async (req, res) => {
       generateAndSetToken(user._id, res);
       res.status(200).json({
         _id: user._id,
-        fullname: user.fullname,
+        username: user.username,
         username: user.username,
         profilePic: user.profilePic,
       });
