@@ -31,7 +31,11 @@ const Conversation = () => {
 
   useEffect(() => {
     getMessages(selectedConversation ? selectedConversation._id : "");
-    lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (lastMessageRef?.current !== undefined) {
+      lastMessageRef?.current.scrollIntoView({
+        behavior: "smooth",
+      });
+    }
   }, [selectedConversation, sendMessage]);
 
   if (selectedConversation == null) {
@@ -58,37 +62,45 @@ const Conversation = () => {
 
         <div className="wrapper h-[450px] overflow-scroll">
           {messages?.length >= 1 && (
-            <div className="conversation-body flex-1 m-5">
-              {messages.map((message, index) => {
-                let own = false;
-                if (message.senderID == authUser._id) own = true;
+            <>
+              <div className="conversation-body flex-1 m-5">
+                {messages.map((message, index) => {
+                  let own = false;
+                  if (message.senderID == authUser._id) own = true;
 
-                return (
-                  <div
-                    ref={index === messages.length - 1 ? lastMessageRef : null}
-                    key={index}
-                    class={`chat ${own ? "chat-end" : "chat-start"}`}
-                  >
-                    <div class="chat-image avatar">
-                      <div class="w-10 rounded-full">
-                        <img
-                          alt="Tailwind CSS chat bubble component"
-                          src={
-                            own
-                              ? authUser.profilePic
-                              : selectedConversation.profilePic
-                          }
-                        />
+                  return (
+                    <div
+                      key={index}
+                      class={`chat ${own ? "chat-end" : "chat-start"}`}
+                    >
+                      <div class="chat-image avatar">
+                        <div class="w-10 rounded-full">
+                          <img
+                            alt="Tailwind CSS chat bubble component"
+                            src={
+                              own
+                                ? authUser.profilePic
+                                : selectedConversation.profilePic
+                            }
+                          />
+                        </div>
                       </div>
+                      <div class="chat-header text-white">
+                        {own
+                          ? authUser.fullname
+                          : selectedConversation.fullname}
+                      </div>
+                      <div class="chat-bubble">{message.message}</div>
                     </div>
-                    <div class="chat-header text-white">
-                      {own ? authUser.fullname : selectedConversation.fullname}
-                    </div>
-                    <div class="chat-bubble">{message.message}</div>
-                  </div>
-                );
-              })}
-            </div>
+                  );
+                })}
+              </div>
+              <div
+                className="dummy"
+                style={{ height: "50px" }}
+                ref={lastMessageRef}
+              ></div>
+            </>
           )}
 
           {messages == undefined && (
@@ -110,6 +122,9 @@ const Conversation = () => {
               if (e.key == "Enter") {
                 sendMessage(selectedConversation._id, message);
                 setMessage("");
+                lastMessageRef.current.scrollIntoView({
+                  behavior: "smooth",
+                });
               }
             }}
             type="text"
@@ -121,6 +136,7 @@ const Conversation = () => {
             onClick={() => {
               sendMessage(selectedConversation._id, message);
               setMessage("");
+              lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
             }}
           >
             Send
