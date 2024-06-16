@@ -5,8 +5,25 @@ import Signup from "./pages/signup";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useAuthContext } from "./context/authContext";
+import { useEffect } from "react";
+
 function App() {
   const { authUser } = useAuthContext();
+
+  useEffect(() => {
+    const handleBeforeUnload = (e) => {
+      const message = "Are you sure you want to leave this page?";
+      e.preventDefault();
+      e.returnValue = message; // For older browsers
+      return message;
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
 
   return (
     <>
