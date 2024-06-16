@@ -43,8 +43,8 @@ const useSignup = () => {
 export default useSignup;
 
 const validateInput = (inputs) => {
-  const { fullName, username, gender, password, confirmPassword } = inputs;
-  if ((!fullName, !username, !gender, !password, !confirmPassword)) {
+  const { username, gender, password, confirmPassword } = inputs;
+  if ((!username, !gender, !password, !confirmPassword)) {
     toast.error("Please fill all field");
     return false;
   }
