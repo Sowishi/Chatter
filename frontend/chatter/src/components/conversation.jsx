@@ -55,7 +55,7 @@ const Conversation = () => {
               onClick={() => setSelectedConversation(null)}
             />
             <h1 className="font-bold text-white">
-              {getSelectedConversation().fullname}
+              {getSelectedConversation().username}
             </h1>
           </div>
           <button className="btn btn-error btn-sm text-white" onClick={logout}>
@@ -90,8 +90,8 @@ const Conversation = () => {
                       </div>
                       <div class="chat-header text-white">
                         {own
-                          ? authUser.fullname
-                          : selectedConversation.fullname}
+                          ? authUser.username
+                          : selectedConversation.username}
                       </div>
                       <div class="chat-bubble">{message.message}</div>
                     </div>
@@ -108,7 +108,7 @@ const Conversation = () => {
 
           {messages == undefined && (
             <>
-              <div className="h-[500px] flex justify-center items-center text-white">
+              <div className="h-[500px] flex justify-center items-center text-white text-center px-5">
                 <h1 className="text-3xl">
                   Say hello to, {selectedConversation?.username} 👋
                 </h1>
@@ -157,7 +157,7 @@ const NoSelectedConversation = () => {
       <div className="wrapper h-[580px]  flex justify-center items-center mx-20">
         {authUser && (
           <h1 className="text-3xl text-center">
-            Hello, {authUser.fullname}. Click to the user icon to start a
+            Hello, {authUser.username}. Click to the user icon to start a
             conversation👋
           </h1>
         )}

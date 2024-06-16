@@ -10,7 +10,7 @@ const Login = () => {
 
   return (
     <div
-      className="login-wrapper flex items-center justify-center column flex-col bg-slate-950 mx-5 "
+      className="login-wrapper flex items-center justify-center column flex-col bg-slate-950 mx-5 px-5"
       style={{ width: 500, height: 450 }}
     >
       <h1 className="text-3xl text-white ">Login to Chatter</h1>
@@ -18,7 +18,7 @@ const Login = () => {
         onChange={(e) => setUsername(e.target.value)}
         type="text"
         placeholder="Enter your username"
-        class="input input-bordered input-info w-full max-w-xs my-5"
+        class="input input-bordered input-info w-full max-w-xs my-5 "
       />
       <input
         onChange={(e) => setPassword(e.target.value)}
